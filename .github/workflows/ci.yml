@@ -22,7 +22,11 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Run Github Super Linter
+        uses: super-linter/super-linter@v6.6.0
 
       # Runs a single command using the runners shell
       - name: Testing React Code

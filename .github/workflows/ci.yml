@@ -31,7 +31,7 @@ jobs:
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VALIDATE_JAVASCRIPT_ES: false
-          VALIDATE_JAVASCRIPT_STANDARD: true
+          # VALIDATE_JAVASCRIPT_STANDARD: true
 
       # Runs a single command using the runners shell
       - name: Testing React Code

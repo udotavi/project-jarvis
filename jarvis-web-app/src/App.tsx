@@ -1,15 +1,10 @@
-import './App.css';
-
-import React from 'react';
-import logo from './logo.svg';
+import React from "react";
+import logo from "./logo.svg";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <a className='text-white text-decoration-none'>JARVIS</a>
-      </header>
+    <div className="ms-2">
+      <h1 className="text-primary">Jarvis</h1>
     </div>
   );
 }

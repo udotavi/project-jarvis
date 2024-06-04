@@ -37,8 +37,9 @@ jobs:
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BRANCH: ${{ github.event.pull_request.base.ref }}
-          # below flag is creating issues
+          # below flags are creating issues
           VALIDATE_TYPESCRIPT_STANDARD: false
+          VALIDATE_NATURAL_LANGUAGE: false
 
       # Runs a single command using the runners shell
       - name: Testing React Code

@@ -1,5 +1,5 @@
-# This is workflow for CI
-name: CI
+# This is CI workflow for Infrastructure
+name: CI Infra
 
 # Controls when the workflow will run
 on:
@@ -7,7 +7,7 @@ on:
   pull_request:
     branches: ["main"]
     paths:
-      - jarvis-web-app/**
+      - jarvis-infra/**
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -37,10 +37,14 @@ jobs:
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BRANCH: ${{ github.event.pull_request.base.ref }}
-          # below flags are creating issues
-          VALIDATE_TYPESCRIPT_STANDARD: false
-          VALIDATE_NATURAL_LANGUAGE: false
+          VALIDATE_TERRAFORM_FMT: true
+          VALIDATE_TERRAFORM_TERRASCAN: true
+          VALIDATE_TERRAFORM_TFLINT: true
 
-      # Runs a single command using the runners shell
-      - name: Testing React Code
-        run: echo "Well, testing some code!"
+      # Terraform Init Phase
+      - name: Terraform Init Phase
+        run: echo "running terraform init .."
+
+      # Terraform Plan Phase
+      - name: Terraform Plan Phase
+        run: echo "running terraform plan .."

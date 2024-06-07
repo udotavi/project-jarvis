@@ -1,0 +1,30 @@
+# This is CI workflow for Frontend Web App
+name: CI Frontend
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow pull request events but only for the "main" branch
+  # pull_request:
+  #   branches: ["main"]
+  #   paths:
+  #     - jarvis-web-app/**
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+permissions: read-all
+
+jobs:
+  test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    permissions: write-all
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      # Runs a single command using the runners shell
+      - name: Testing React Code
+        run: echo "Well, testing some code!"

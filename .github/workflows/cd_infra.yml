@@ -1,10 +1,10 @@
-# This is CI workflow for Infrastructure
-name: CI Infra
+# This is CD workflow for Infrastructure
+name: CD Infra
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow pull request events but only for the "main" branch
-  pull_request:
+  # Triggers the workflow push events but only for the "main" branch
+  push:
     branches: ["main"]
     paths:
       - jarvis-infra/**
@@ -15,7 +15,7 @@ on:
 permissions: read-all
 
 jobs:
-  infra-plan:
+  infra-deployment:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     permissions: write-all
@@ -45,13 +45,13 @@ jobs:
         run: |
           terraform init -backend-config="storage_account_name=$STORAGE_ACCOUNT" -backend-config="container_name=$CONTAINER_NAME" -backend-config="resource_group_name=$RESOURCE_GROUP" -backend-config="key=project-jarvis-dev.tfstate"
 
-      # Run a terraform plan for pull requests only
-      - name: Terraform Plan
-        id: plan
+      # Run a terraform apply for push
+      - name: Terraform Apply
+        id: apply
         env:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
         working-directory: ./jarvis-infra
-        run: terraform plan -no-color --var-file=dev.tfvars
+        run: terraform apply --var-file=dev.tfvars -auto-approve

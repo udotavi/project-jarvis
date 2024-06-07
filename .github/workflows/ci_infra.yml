@@ -54,4 +54,4 @@ jobs:
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
         run: |
           cd jarvis-infra
-          terraform plan -no-color
+          terraform plan -no-color --var-file=dev.tfvars

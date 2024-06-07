@@ -37,9 +37,10 @@ jobs:
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BRANCH: ${{ github.event.pull_request.base.ref }}
+          # infra related flags
           VALIDATE_TERRAFORM_FMT: true
-          VALIDATE_TERRAFORM_TERRASCAN: true
           VALIDATE_TERRAFORM_TFLINT: true
+          VALIDATE_CHECKOV: true
 
       # Terraform Init Phase
       - name: Terraform Init Phase

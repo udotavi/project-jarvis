@@ -37,9 +37,14 @@ jobs:
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BRANCH: ${{ github.event.pull_request.base.ref }}
-          # below flags are creating issues
-          VALIDATE_TYPESCRIPT_STANDARD: false
-          VALIDATE_NATURAL_LANGUAGE: false
+          # frontend dev related flags
+          VALIDATE_HTML: true
+          VALIDATE_CSS: true
+          VALIDATE_JAVASCRIPT_ES: true
+          VALIDATE_JAVASCRIPT_STANDARD: true
+          VALIDATE_TYPESCRIPT_ES: true
+          VALIDATE_JSON: true
+          VALIDATE_JSX: true
 
       # Runs a single command using the runners shell
       - name: Testing React Code

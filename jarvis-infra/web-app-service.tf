@@ -12,5 +12,10 @@ resource "azurerm_linux_web_app" "web-app" {
   location            = data.azurerm_resource_group.project-resource-group.location
   service_plan_id     = azurerm_service_plan.web-app-service-plan.id
 
-  site_config {}
+  site_config {
+    application_stack {
+      node_version = "20-lts"
+    }
+    minimum_tls_version = "1.2"
+  }
 }

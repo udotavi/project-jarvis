@@ -11,11 +11,17 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      action:
+        description: "Terraform Action"
+        type: string
+        required: true
+        default: "Deploy Infra"
 
 permissions: read-all
 
 jobs:
-  infra-deployment:
+  infra-changes:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     permissions: write-all
@@ -46,8 +52,9 @@ jobs:
           terraform init -backend-config="storage_account_name=$STORAGE_ACCOUNT" -backend-config="container_name=$CONTAINER_NAME" -backend-config="resource_group_name=$RESOURCE_GROUP" -backend-config="key=project-jarvis-dev.tfstate"
 
       # Run a terraform apply for push
-      - name: Terraform Apply
+      - name: Terraform Deploy
         id: apply
+        if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'Deploy Infra' }}
         env:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
@@ -55,3 +62,15 @@ jobs:
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
         working-directory: ./jarvis-infra
         run: terraform apply --var-file=dev.tfvars -auto-approve
+
+      # Run a terraform destroy if input says so
+      - name: Terraform Destroy
+        id: destroy
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'Destroy Infra' }}
+        env:
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+        working-directory: ./jarvis-infra
+        run: terraform destroy --var-file=dev.tfvars -auto-approve

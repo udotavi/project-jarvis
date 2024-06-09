@@ -14,6 +14,11 @@ on:
 
 permissions: read-all
 
+env:
+  AZURE_WEBAPP_NAME: project-jarvis-dev-web-app # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: "./jarvis-web-app/build" # set this to the path to your web app project, defaults to the repository root
+  NODE_VERSION: "18.x" # set this to the node version to use
+
 jobs:
   test:
     # The type of runner that the job will run on
@@ -25,6 +30,13 @@ jobs:
       - name: Checkout Codebase
         uses: actions/checkout@v4
 
-      # Runs a single command using the runners shell
-      - name: Testing React Code
-        run: echo "Well, testing some code!"
+      - name: Setup Node ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: "npm install, build"
+        run: |
+          npm install
+          npm run build --if-present
+        working-directory: ./jarvis-web-app

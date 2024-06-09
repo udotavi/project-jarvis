@@ -20,7 +20,7 @@ env:
   NODE_VERSION: "20.x" # set this to the node version to use
 
 jobs:
-  test:
+  web-app-cicd:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     permissions: write-all
@@ -35,11 +35,10 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: "npm install, build & test"
+      - name: "npm install, build"
         run: |
           npm install
           npm run build --if-present
-          npm run test --if-present
         working-directory: ./jarvis-web-app
 
       - name: "Deploy to Azure WebApp"

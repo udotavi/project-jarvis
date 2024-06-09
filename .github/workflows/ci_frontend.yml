@@ -1,5 +1,5 @@
-# This is CI workflow for Frontend Web App
-name: CI Frontend
+# This is workflow for Frontend Web App
+name: Frontend Workflow
 
 # Controls when the workflow will run
 on:
@@ -17,7 +17,7 @@ permissions: read-all
 env:
   AZURE_WEBAPP_NAME: project-jarvis-dev-web-app # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: "./jarvis-web-app/build" # set this to the path to your web app project, defaults to the repository root
-  NODE_VERSION: "18.x" # set this to the node version to use
+  NODE_VERSION: "20.x" # set this to the node version to use
 
 jobs:
   test:
@@ -35,8 +35,16 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: "npm install, build"
+      - name: "npm install, build & test"
         run: |
           npm install
           npm run build --if-present
+          npm run test --if-present
         working-directory: ./jarvis-web-app
+
+      - name: "Deploy to Azure WebApp"
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
